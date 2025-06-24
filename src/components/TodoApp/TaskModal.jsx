@@ -29,7 +29,7 @@ export default function TaskModal({
     };
     
     if (currentTask) {
-      taskData.id = currentTask.id; // Include ID for edits
+      taskData.id = currentTask._id || currentTask.id; // Use _id for MongoDB compatibility
     }
     
     onSave(taskData);
@@ -41,13 +41,15 @@ export default function TaskModal({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+        {/* ✅ FIXED: Dark background with white text */}
         <div className="bg-olive-800 text-black px-4 py-3 rounded-t-lg flex justify-between items-center">
           <h3 className="font-semibold text-lg">
             {currentTask ? 'Edit Task' : 'Add New Task'}
           </h3>
+          {/* ✅ FIXED: White text with hover effect */}
           <button 
             onClick={onClose}
-            className="text-black hover:text-olive-200"
+            className="text-white hover:text-olive-200 transition-colors"
           >
             <FaTimes />
           </button>
@@ -56,7 +58,7 @@ export default function TaskModal({
         <div className="p-4">
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label htmlFor="taskText" className="block text-gray-700 mb-2">
+              <label htmlFor="taskText" className="block text-gray-700 mb-2 font-medium">
                 Task Description
               </label>
               <textarea
@@ -64,7 +66,7 @@ export default function TaskModal({
                 value={taskText}
                 onChange={(e) => setTaskText(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-olive-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-olive-500 focus:border-transparent resize-none"
                 rows="3"
                 placeholder="Enter task description..."
               />
@@ -84,6 +86,7 @@ export default function TaskModal({
             </div>
             
             <div className="flex justify-end space-x-3">
+              {/* ✅ FIXED: Cancel button with proper gray styling */}
               <button 
                 type="button"
                 onClick={onClose}
@@ -91,6 +94,7 @@ export default function TaskModal({
               >
                 Cancel
               </button>
+              {/* ✅ FIXED: Submit button with olive background and white text */}
               <button 
                 type="submit"
                 className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"

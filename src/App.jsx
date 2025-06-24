@@ -1,27 +1,56 @@
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import AuthPage from './components/Auth/AuthPage';
-import TodoList from './components/TodoApp/TodoList';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./Context/AuthContext";
+import AuthPage from "./components/Auth/AuthPage";
+import TodoList from "./components/TodoApp/TodoList";
+import LoadingSpinner from "./components/UI/LoadingSpinner";
+// ✅ ADD: Import the new forgot password components
+import ForgotPassword from "./components/Auth/ForgotPassword";
+import ResetPassword from "./components/Auth/ResetPassword";
 
-function App() {
-  const [user, setUser] = useState(() => {
-    // Check localStorage for saved user on initial load
-    const savedUser = localStorage.getItem('user');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+// Protected Route Component
+function ProtectedRoute({ children }) {
+  const { isAuthenticated, loading, user } = useAuth();
 
-  const handleLogin = (userData) => {
-    setUser(userData);
-    // Note: Password should NOT be stored in real applications
-    if (userData.rememberMe) {
-      localStorage.setItem('user', JSON.stringify(userData));
-    }
-  };
+  console.log(
+    "ProtectedRoute - isAuthenticated:",
+    isAuthenticated,
+    "loading:",
+    loading,
+    "user:",
+    user
+  );
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('oliveGroveTodo'); // Clear todo data if needed
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  return isAuthenticated ? children : <Navigate to="/" replace />;
+}
+
+function PublicRoute({ children }) {
+  const { isAuthenticated, loading, user } = useAuth();
+
+  console.log(
+    "PublicRoute - isAuthenticated:",
+    isAuthenticated,
+    "loading:",
+    loading,
+    "user:",
+    user
+  );
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  return !isAuthenticated ? children : <Navigate to="/app" replace />;
+}
+
+function AppContent() {
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
   };
 
   return (
@@ -30,25 +59,49 @@ function App() {
         <Route
           path="/"
           element={
-            !user ? (
-              <AuthPage onLogin={handleLogin} />
-            ) : (
-              <Navigate to="/app" replace />
-            )
+            <PublicRoute>
+              <AuthPage />
+            </PublicRoute>
+          }
+        />
+        {/* ✅ ADD: Forgot Password Route */}
+        <Route
+          path="/forgot-password"
+          element={
+            <PublicRoute>
+              <ForgotPassword />
+            </PublicRoute>
+          }
+        />
+        {/* ✅ ADD: Reset Password Route */}
+        <Route
+          path="/reset-password"
+          element={
+            <PublicRoute>
+              <ResetPassword />
+            </PublicRoute>
           }
         />
         <Route
           path="/app"
           element={
-            user ? (
+            <ProtectedRoute>
               <TodoList onLogout={handleLogout} />
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </ProtectedRoute>
           }
         />
+        {/* Catch all route - redirect to appropriate page */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
