@@ -49,7 +49,7 @@ export default function TaskModal({
           {/* ✅ FIXED: White text with hover effect */}
           <button 
             onClick={onClose}
-            className="text-white hover:text-olive-200 transition-colors"
+            className="text-black hover:text-olive-200 transition-colors"
           >
             <FaTimes />
           </button>

@@ -39,7 +39,7 @@ export default function ForgotPassword() {
     <div className="min-h-screen bg-gradient-to-br from-olive-50 to-olive-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
         {/* Header */}
-        <div className="bg-olive-800 text-black p-6 text-center">
+        <div className="bg-olive-800 text-green p-6 text-center">
           <h2 className="text-2xl font-bold mb-2">Forgot Password</h2>
           <p className="text-olive-200">Enter your email to reset your password</p>
         </div>
@@ -79,7 +79,7 @@ export default function ForgotPassword() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-green-600 text-black py-2 px-4 rounded-lg hover:bg-olive-700 focus:outline-none focus:ring-2 focus:ring-olive-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-olive-600 text-black py-2 px-4 rounded-lg hover:bg-olive-700 focus:outline-none focus:ring-2 focus:ring-olive-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="flex items-center justify-center">
@@ -95,7 +95,7 @@ export default function ForgotPassword() {
             <button
               type="button"
               onClick={handleBackToLogin}
-              className="w-full flex items-center justify-center text-black-600 hover:text-black-800 py-2 transition-colors"
+              className="w-full flex items-center justify-center text-olive-600 hover:text-olive-800 py-2 transition-colors"
             >
               <FaArrowLeft className="mr-2" />
               Back to Login
