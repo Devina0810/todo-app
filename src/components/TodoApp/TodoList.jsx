@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import {
   FaPlus,
@@ -13,6 +14,11 @@ import {
 import TaskModal from "./TaskModal";
 import todoService from "../../services/todoService";
 import authService from "../../services/authService";
+=======
+import { useState, useEffect } from 'react';
+import { FaPlus, FaTrash, FaPen, FaArrowUp, FaArrowDown, FaCheck, FaList, FaTimes, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import TaskModal from './TaskModal'; // NEW: Import TaskModal
+>>>>>>> 2e9ea39b88041e5813972259e36b5b7f6007bb1a
 
 export default function TodoList({ onLogout }) {
   // State management - ✅ FIXED: Ensure lists is always an array
@@ -29,8 +35,14 @@ export default function TodoList({ onLogout }) {
   const [showNewListModal, setShowNewListModal] = useState(false);
   const [showEditListModal, setShowEditListModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+<<<<<<< HEAD
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
+=======
+  const [showTaskModal, setShowTaskModal] = useState(false); // NEW: Task modal state
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false); // NEW: Profile dropdown state
+  const [currentTask, setCurrentTask] = useState(null); // NEW: Track task being edited
+>>>>>>> 2e9ea39b88041e5813972259e36b5b7f6007bb1a
   const [modalData, setModalData] = useState({
     listName: "",
     listId: "",
@@ -333,12 +345,29 @@ export default function TodoList({ onLogout }) {
     setShowConfirmModal(true);
   };
 
+<<<<<<< HEAD
   // ✅ FIXED: Safe access to current list data with proper fallbacks
   const currentList = Array.isArray(state.lists) 
     ? state.lists.find((list) => list._id === state.currentListId)
     : null;
   const pendingTasks =
     currentList?.tasks?.filter((task) => !task.completed)?.length || 0;
+=======
+  // NEW: Handle logout confirmation
+  const handleLogout = () => {
+    showDeleteConfirmation(
+      'Are you sure you want to logout? Your data will remain saved.',
+      onLogout
+    );
+  };
+
+  // Current list data
+  const currentList = state.lists.find(list => list.id === state.currentListId);
+  const pendingTasks = currentList?.tasks.filter(task => !task.completed).length || 0;
+>>>>>>> 2e9ea39b88041e5813972259e36b5b7f6007bb1a
+
+  // Get user data from localStorage
+  const userData = JSON.parse(localStorage.getItem('user') || '{}');
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -349,12 +378,17 @@ export default function TodoList({ onLogout }) {
             <h1 className="text-3xl font-bold text-gray-800">Task Trackr</h1>
           </div>
           <div className="flex items-center space-x-4">
+<<<<<<< HEAD
             <button
+=======
+            <button 
+>>>>>>> 2e9ea39b88041e5813972259e36b5b7f6007bb1a
               onClick={() => showListModal()}
-              className="bg-olive-600 hover:bg-olive-700 px-4 py-2 rounded-lg flex items-center transition-colors text-olive-600 hover:text-olive-800 font-medium"
+              className="bg-olive-600 hover:bg-olive-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
             >
               <FaPlus className="mr-2" /> New List
             </button>
+<<<<<<< HEAD
 
             <button
               onClick={handleLogout}
@@ -370,18 +404,73 @@ export default function TodoList({ onLogout }) {
                 className="w-10 h-10 rounded-full object-cover border-2 border-olive-600"
               />
               <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+=======
+            
+            {/* Profile Section with Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                <img 
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                  alt="Profile" 
+                  className="w-10 h-10 rounded-full object-cover border-2 border-olive-600"
+                />
+                <span className="hidden md:block text-gray-700 font-medium">
+                  {userData.name || userData.username || 'User'}
+                </span>
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+              </button>
+
+              {/* Dropdown Menu */}
+              {showProfileDropdown && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                  <div className="py-1">
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <p className="text-sm font-medium text-gray-800">
+                        {userData.name || userData.username || 'User'}
+                      </p>
+                      {userData.email && (
+                        <p className="text-xs text-gray-500">{userData.email}</p>
+                      )}
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center transition-colors"
+                    >
+                      <FaSignOutAlt className="mr-2" />
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              )}
+>>>>>>> 2e9ea39b88041e5813972259e36b5b7f6007bb1a
             </div>
           </div>
         </header>
+
+        {/* Click outside to close dropdown */}
+        {showProfileDropdown && (
+          <div 
+            className="fixed inset-0 z-40" 
+            onClick={() => setShowProfileDropdown(false)}
+          ></div>
+        )}
 
         {/* Main Content */}
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Lists Sidebar */}
           <div className="w-full lg:w-1/4 bg-white rounded-xl shadow-md overflow-hidden">
+<<<<<<< HEAD
             <div className="bg-olive-800 text-olive-600 px-4 py-3 flex justify-between items-center">
               <h2 className="font-semibold text-lg text-olive-600">
                 Your Lists
               </h2>
+=======
+            <div className="bg-olive-800 text-white px-4 py-3 flex justify-between items-center">
+              <h2 className="font-semibold text-lg">Your Lists</h2>
+>>>>>>> 2e9ea39b88041e5813972259e36b5b7f6007bb1a
               <span className="bg-olive-600 text-xs px-2 py-1 rounded-full">
                 {(state.lists || []).length}
               </span>
@@ -492,14 +581,14 @@ export default function TodoList({ onLogout }) {
                 </p>
                 <button
                   onClick={() => showListModal()}
-                  className="bg-olive-600 hover:bg-olive-700 text-olive-600 px-4 py-2 rounded-lg flex items-center transition-colors"
+                  className="bg-olive-600 hover:bg-olive-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
                 >
                   <FaPlus className="mr-2" /> Create New List
                 </button>
               </div>
             ) : (
               <>
-                <div className="bg-olive-800 text-olive-600 px-4 py-3 flex justify-between items-center">
+                <div className="bg-olive-800 text-white px-4 py-3 flex justify-between items-center">
                   <div>
                     <h2 className="font-semibold text-lg">
                       {currentList.title || currentList.name}
@@ -510,6 +599,7 @@ export default function TodoList({ onLogout }) {
                     </p>
                   </div>
                   <div className="flex space-x-2">
+<<<<<<< HEAD
                     <button
                       className="p-2 text-olive-200 hover:text-text-olive-600 transition-colors"
                       onClick={() =>
@@ -524,6 +614,20 @@ export default function TodoList({ onLogout }) {
                     <button
                       className="p-2 text-olive-200 hover:text-text-olive-600 transition-colors"
                       onClick={() => showListModal(currentList._id)}
+=======
+                    <button 
+                      className="p-2 text-olive-200 hover:text-white transition-colors"
+                      onClick={() => showDeleteConfirmation(
+                        'Are you sure you want to delete this list and all its tasks?',
+                        () => deleteList(currentList.id)
+                      )}
+                    >
+                      <FaTrash />
+                    </button>
+                    <button 
+                      className="p-2 text-olive-200 hover:text-white transition-colors"
+                      onClick={() => showListModal(currentList.id)}
+>>>>>>> 2e9ea39b88041e5813972259e36b5b7f6007bb1a
                     >
                       <FaPen />
                     </button>
@@ -537,7 +641,7 @@ export default function TodoList({ onLogout }) {
                       setCurrentTask(null);
                       setShowTaskModal(true);
                     }}
-                    className="w-full bg-olive-600 hover:bg-olive-700 text-olive-600 py-2 px-4 rounded-lg flex items-center justify-center transition-colors"
+                    className="w-full bg-olive-600 hover:bg-olive-700 text-white py-2 px-4 rounded-lg flex items-center justify-center transition-colors"
                   >
                     <FaPlus className="mr-2" /> Add New Task
                   </button>
@@ -641,11 +745,11 @@ export default function TodoList({ onLogout }) {
       {showNewListModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
-            <div className="bg-olive-800 text-olive-600 px-4 py-3 rounded-t-lg flex justify-between items-center">
+            <div className="bg-olive-800 text-white px-4 py-3 rounded-t-lg flex justify-between items-center">
               <h3 className="font-semibold text-lg">Create New List</h3>
               <button
                 onClick={() => setShowNewListModal(false)}
-                className="text-olive-600 hover:text-olive-200"
+                className="text-white hover:text-olive-200"
               >
                 <FaTimes />
               </button>
@@ -681,8 +785,12 @@ export default function TodoList({ onLogout }) {
                   </button>
                   <button
                     type="submit"
+<<<<<<< HEAD
                     className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-olive-500 focus:ring-offset-2 transition-colors"
                     disabled={loading}
+=======
+                    className="px-4 py-2 bg-olive-600 text-white rounded-lg hover:bg-olive-700 transition-colors"
+>>>>>>> 2e9ea39b88041e5813972259e36b5b7f6007bb1a
                   >
                     {loading ? "Creating..." : "Create List"}
                   </button>
@@ -697,7 +805,7 @@ export default function TodoList({ onLogout }) {
       {showEditListModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
-            <div className="bg-olive-800 text-black px-4 py-3 rounded-t-lg flex justify-between items-center">
+            <div className="bg-olive-800 text-white px-4 py-3 rounded-t-lg flex justify-between items-center">
               <h3 className="font-semibold text-lg">Edit List</h3>
               <button
                 onClick={() => setShowEditListModal(false)}
@@ -737,8 +845,12 @@ export default function TodoList({ onLogout }) {
                   </button>
                   <button
                     type="submit"
+<<<<<<< HEAD
                     className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
                     disabled={loading}
+=======
+                    className="px-4 py-2 bg-olive-600 text-white rounded-lg hover:bg-olive-700 transition-colors"
+>>>>>>> 2e9ea39b88041e5813972259e36b5b7f6007bb1a
                   >
                     {loading ? "Saving..." : "Save Changes"}
                   </button>
@@ -753,7 +865,7 @@ export default function TodoList({ onLogout }) {
       {showConfirmModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
-            <div className="bg-olive-800 text-olive-600 px-4 py-3 rounded-t-lg flex justify-between items-center">
+            <div className="bg-olive-800 text-white px-4 py-3 rounded-t-lg flex justify-between items-center">
               <h3 className="font-semibold text-lg">Confirm Action</h3>
               <button
                 onClick={() => setShowConfirmModal(false)}
@@ -768,7 +880,7 @@ export default function TodoList({ onLogout }) {
                 <button
                   type="button"
                   onClick={() => setShowConfirmModal(false)}
-                  className="px-4 py-2 border border-gray-300 text-olive-600 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   Cancel
                 </button>
@@ -778,8 +890,12 @@ export default function TodoList({ onLogout }) {
                     modalData.confirmAction();
                     setShowConfirmModal(false);
                   }}
+<<<<<<< HEAD
                   className="px-4 py-2 border border-gray-300 text-olive-600 rounded-lg hover:bg-gray-100 transition-colors"
                   disabled={loading}
+=======
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+>>>>>>> 2e9ea39b88041e5813972259e36b5b7f6007bb1a
                 >
                   {loading ? "Processing..." : "Confirm"}
                 </button>
